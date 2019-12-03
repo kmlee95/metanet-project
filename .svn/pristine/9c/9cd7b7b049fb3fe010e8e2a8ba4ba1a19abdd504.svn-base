@@ -1,0 +1,84 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="true"%>
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>mainPage</title>
+
+<!-- Bootstrap core CSS -->
+<link href="/resources/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<!-- icon -->
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+	integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+	crossorigin="anonymous">
+
+<!-- fonts -->
+<link href="https://fonts.googleapis.com/css?family=Heebo|Noto+Sans+KR"
+	rel="stylesheet">
+
+<!-- mainbar.css -->
+<link href="/resources/css/mainbar.css" rel="stylesheet">
+
+</head>
+
+<body>
+	<!-- Navigation -->
+	<header class="header-area nvb-fade" id="header">
+		<nav class="nvb">
+			<a class="nvb-brand" id="nvbBrand" href="/userinfo">Metanet</a> <a
+				class="nvb-toggler" id="toggleBtn"><i class="fa fa-bars"></i></a>
+			<div class="nvb-m" id="menu">
+				<div class="nav-item">
+					<a class="nav-link" id="nvbApply" href="/employee/applyforvacation">휴가신청</a>
+				</div>
+				<div class="nav-item">
+					<a class="nav-link" id="nvbPeopleList"
+						href="/teamnanager/applicantlist">신청자 목록</a>
+				</div>
+				<div class="nav-item">
+					<a class="nav-link" id="nvbVacationManage" href="/vmanager/annual">연차
+						관리</a>
+				</div>
+				<div class="nav-item">
+					<a class="nav-link" id="nvbVacationList"
+						href="/vmanager/vmanagelist">사용 목록</a>
+				</div>
+				<div class="nav-item">
+					<a class="nav-link" id="nvbVacationList"
+						href="/userinfo">회원 등록</a>
+				</div>
+				<c:if test="${member == null}">
+					<!-- 사용하다 중간에 session 정보가 날라갔을 경우 -->
+					<div class="nav-item">
+						<a class="nav-link" id="nvbLogin" href="/login">로그인</a>
+					</div>
+				</c:if>
+				
+				<c:if test="${member != null}">
+					<div class="nav-item">
+						<a class="nav-link" id="nvbLoginName">${member.userName} 님</a>
+					</div>
+					<div class="nav-item">
+						<a class="nav-link" id="nvbLogout"
+							href="javascript:{document.getElementById('logout').submit()}">logout</a>
+					</div>
+					<form id="logout" method="POST" action="/logout">
+						<input type="hidden" />
+					</form>
+				</c:if>
+			</div>
+		</nav>
+	</header>
+</body>
+<script src="<c:url value="/resources/js/mainbar.js" />"></script>
+
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- DAO에서 어떻게 이 mapper를 부를 것인지 namespace 정해줌 -->
+
+<!-- id와 name의 데이터가나옴 -->
+<mapper namespace="Member">
+	<!-- id는 쿼리문을 무엇으로 보낼 것인지 resultType은 결과물이 무엇인지 -->
+	<select id="login" resultType="kr.co.metanet.dto.MemberDTO">
+		select
+		*
+		from
+		myMember
+		where userId =
+		#{userId}
+		and userPass = #{userPass}
+	</select>
+
+	<insert id="signup" parameterType="kr.co.metanet.dto.MemberDTO">
+		insert into myMember (userId,
+		userPass, userName, regDate, gender, employCode, phoneNumber,
+		org_code, emp_rank)
+		values (#{userId}, #{userPass}, #{userName},
+		#{regDate}, #{gender}, #{employCode}, #{phoneNumber}, #{org_code},
+		#{emp_rank})
+	</insert>
+</mapper>
+

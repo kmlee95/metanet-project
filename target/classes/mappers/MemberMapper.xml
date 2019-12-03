@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- DAO에서 어떻게 이 mapper를 부를 것인지 namespace 정해줌 -->
+
+<!-- id와 name의 데이터가나옴 -->
+<mapper namespace="Member">
+	<!-- id는 쿼리문을 무엇으로 보낼 것인지 resultType은 결과물이 무엇인지 -->
+	<select id="login" resultType="kr.co.metanet.dto.MemberDTO">
+		select
+		*
+		from
+		myMember
+		where userId =
+		#{userId}
+		and userPass = #{userPass}
+		and verify = 1
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="signup" parameterType="kr.co.metanet.dto.MemberDTO">
+		<selectKey keyProperty="bno" resultType="int" order="BEFORE">
+			SELECT no_seq.nextval From DUAL
+		</selectKey>
+
+		insert into myMember (bno, userId,
+		userPass, userName, regDate, gender,
+		employCode, phoneNumber,
+		org_code, emp_rank)
+		values (#{bno}, #{userId},
+		#{userPass}, #{userName},
+		#{regDate}, #{gender}, #{employCode},
+		#{phoneNumber}, #{org_code},
+		#{emp_rank})
+
+	</insert>
+
+	<!-- 회원가입 이메일 인증 -->
+	<update id="createAuthKey">
+		update myMember set verify = #{authKey} where userId
+		= #{userId}
+	</update>
+
+	<update id="userAuth">
+		update myMember set verify = 1 where userId =
+		#{userId}
+	</update>
+
+
+	<!-- 유저 목록 불러오기, 전체 , 검색기능-->
+	<select id="getMemberList"
+		resultType="kr.co.metanet.dto.MemberDTO">
+		select
+		*
+		from
+		myMember
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="searchType=='userId' and keyword != null and keyword != '' ">
+				AND userId like '%' || #{keyword} || '%'
+			</if>
+			<if test="searchType=='employCode' and keyword != null and keyword != '' ">
+				AND employCode like '%' || #{keyword} || '%'
+			</if>
+			<if test="searchType=='userName' and keyword != null and keyword != '' ">
+				AND userName like '%' || #{keyword} || '%'
+			</if>	
+		</trim>
+	</select>
+
+
+	<!-- DETAIL버튼 클릭하여 유저 업데이트 -->
+	<update id="updateMember"
+		parameterType="kr.co.metanet.dto.MemberDTO"> UPDATE myMember SET userId = #{userId} , userPass =
+		#{userPass} , userName = #{userName}, regDate = #{regDate}, gender =
+		#{gender}, phoneNumber = #{phoneNumber}, org_code = #{org_code},
+		emp_rank = #{emp_rank} WHERE employCode = #{employCode}
+	</update>
+
+	<!-- DETAIL버튼 클릭하여 유저 삭제 -->
+	<delete id="deleteMember" parameterType="String"> DELETE FROM myMember
+		WHERE employCode = #{employCode} </delete>
+
+</mapper>
+

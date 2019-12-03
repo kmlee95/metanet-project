@@ -1,0 +1,23 @@
+package kr.co.metanet.dao;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import kr.co.metanet.dto.MemberDTO;
+
+@Repository
+public class MemberDAO_Impl implements MemberDAO {
+	public static final String NAMESPACE ="Member";
+	@Autowired
+	SqlSession sql;
+    
+	@Override
+	public MemberDTO login(MemberDTO dto) throws Exception{
+		return sql.selectOne(NAMESPACE+".login", dto);
+	}
+	
+	@Override
+	public void signup(MemberDTO dto) throws Exception{
+		sql.insert("Member.signup", dto);
+	}
+}

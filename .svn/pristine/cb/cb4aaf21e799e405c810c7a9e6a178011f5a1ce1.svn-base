@@ -1,0 +1,9 @@
+package kr.co.metanet.dao;
+
+import kr.co.metanet.dto.MemberDTO;
+
+public interface MemberDAO {
+	public MemberDTO login(MemberDTO dto) throws Exception;
+	
+	public void signup(MemberDTO dto) throws Exception;
+}
