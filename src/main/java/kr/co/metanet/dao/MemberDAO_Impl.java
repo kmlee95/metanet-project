@@ -44,7 +44,13 @@ public class MemberDAO_Impl implements MemberDAO {
 	public void userAuth(String userId) throws Exception { // 인증키 일치시 DB칼럼(인증여부) false->true 로 변경
 		sql.update(NAMESPACE + ".userAuth", userId);
 	}
-
+	
+	//id check
+	@Override
+	public int userIdCheck(String userId) throws Exception{
+		return sql.selectOne(NAMESPACE+ ".userIdCheck", userId);
+	}
+	
 	// 계정관련 crud
 	//유저 검색  + 유저 리스트 확인
 	@Override

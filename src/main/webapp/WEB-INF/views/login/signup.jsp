@@ -12,25 +12,127 @@
 <title>Annual Manage PAGE</title>
 
 <!-- Bootstrap core CSS -->
+
 <link href="/resources/vendor/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 
 <!-- login css -->
 <link href="/resources/css/annualmanage.css" rel="stylesheet">
+
+<!-- jquery cdn -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
 	<%@ include file="../mainbar.jsp"%>
+	<link
+		href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+		rel="stylesheet">
+
+	<script>
+		// 비밀번호 정규식, A~Z, a~z, 0~9로 시작하는 비밀번호 4~12자리
+		var pwJ = /^[A-Za-z0-9]{4,12}$/;
+		// 이름 정규식, 가~힣 만으로 이루어진 2~6자리
+		var nameJ = /^[가-힣]{2,6}$/;
+		// 이메일(아이디) 검사 정규식
+		var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		// 휴대폰 번호 정규식(특수문자 x)
+		var phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
+		//사원코드 정규식
+		var employJ = /^E?([0-9]{4})$/;
+		
+		$(document).ready(function() {
+			$('#password').blur(function() {
+				if (pwJ.test($('#password').val())) {
+					console.log('true');
+					$('#pw_check').text('');
+				} else {
+					console.log('false');
+					$('#pw_check').text('숫자 or 문자로만 4~12자리 입력 :)');
+					$('#pw_check').css('color', 'red');
+				}
+			});
+			$('#cpassword').blur(function() {
+				if ($('#password').val() != $(this).val()) {
+					$('#pw2_check').text('비밀번호가 일치하지 않습니다 :p');
+					$('#pw2_check').css('color', 'red');
+					$("#reg_submit").attr("disabled", true);
+				} else {
+					$('#pw2_check').text('');
+					$("#reg_submit").attr("disabled", false);
+				}
+			});
+			$('#mem_name').blur(function() {
+				if (nameJ.test($(this).val())) {
+					$("#name_check").text('');
+				} else {
+					$('#name_check').text('이름을 확인해 주세요(한글만 가능) :)');
+					$('#name_check').css('color', 'red');
+				}
+			});
+			$('#contactnum').blur(function() {
+				if (phoneJ.test($(this).val())) {
+					$("#phone_check").text('');
+				} else {
+					$('#phone_check').text('휴대폰 번호를 확인해 주세요(특수문자 X)');
+					$('#phone_check').css('color', 'red');
+				}
+			});
+			$('#captcha').blur(function() {
+				if (employJ.test($(this).val())) {
+					$("#employCode_check").text('');
+				} else {
+					$('#employCode_check').text('사원코드는 필수 입력사항 입니다.');
+					$('#employCode_check').css('color', 'red');
+				}
+			});
+			
+			//아이디 검사
+			$("#userId").blur(function() {
+				var userId = $('#userId').val();
+				$.ajax({
+					url : '${pageContext.request.contextPath}/login/idCheck?userId='+ userId,
+					type : 'get',
+					success : function(data) {
+						console.log(data);				
+									
+						if (data == 1) {
+								$("#id_check").text("사용중인 아이디입니다 :p");
+								$("#id_check").css("color", "red");
+								$("#reg_submit").attr("disabled", true);
+							} else {
+								if(mailJ.test(userId)){
+									// 0 : 아이디 길이 / 문자열 검사
+									$("#id_check").text("");
+									$("#reg_submit").attr("disabled", false);
+								} else if(userId == ""){
+									$('#id_check').text('아이디를 입력해주세요 :)');
+									$('#id_check').css('color', 'red');
+									$("#reg_submit").attr("disabled", true);				
+								} else {
+									$('#id_check').text("아이디는 실제 이메일 형식만 가능합니다 :)");
+									$('#id_check').css('color', 'red');
+									$("#reg_submit").attr("disabled", true);
+								}
+							}
+						}, error : function() {
+								console.log("실패");
+						}
+					});
+				});
+		});
+	</script>
+
 	<div class="container" style="margin-top: 10px;">
 		<div class="card">
-
-			<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-			<link
-				href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
-				rel="stylesheet">
-			<script
-				src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8">
@@ -39,8 +141,8 @@
 								<span>Sign Up</span>
 							</h1>
 							<hr>
-							<form class="form-horizontal" method="post" name="signup" action="/login/signup"
-								id="signup">
+							<form class="form-horizontal" method="post" name="signup"
+								action="/login/signup" id="signup">
 								<div class="form-group">
 									<label class="control-label col-sm-3">Email ID <span
 										class="text-danger">*</span></label>
@@ -48,12 +150,10 @@
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="glyphicon glyphicon-envelope"></i></span> <input
-												type="text" class="form-control" name="userId"
-												id="userId" placeholder="Enter your Email ID" value="">
+												type="text" class="form-control" name="userId" id="userId"
+												placeholder="Enter your Email ID" value="">	
 										</div>
-										<small> Your Email Id is being used for ensuring the
-											security of your account, authorization and access recovery.
-										</small>
+										<div class="check_font" id="id_check"></div>
 									</div>
 								</div>
 
@@ -67,6 +167,7 @@
 												class="form-control" name="userPass" id="password"
 												placeholder="Choose password (5-15 chars)" value="">
 										</div>
+										<div class="check_font" id="pw_check"></div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -80,6 +181,7 @@
 												class="form-control" name="cpassword" id="cpassword"
 												placeholder="Confirm your password" value="">
 										</div>
+										<div class="check_font" id="pw2_check"></div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -88,6 +190,7 @@
 									<div class="col-md-8 col-sm-9">
 										<input type="text" class="form-control" name="userName"
 											id="mem_name" placeholder="Enter your Name here" value="">
+										<div class="check_font" id="name_check"></div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -129,12 +232,13 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label col-sm-3">입사 년도
-										<span class="text-danger">*</span>
+									<label class="control-label col-sm-3">입사 년도 <span
+										class="text-danger">*</span>
 									</label>
 									<div class="col-md-5 col-sm-8">
 										<input type="date" class="form-control" name="regDate"
-											id="enter_date" placeholder="Enter your date(yyyymmdd)" value="2019-09-22">
+											id="enter_date" placeholder="Enter your date(yyyymmdd)"
+											value="2019-09-22">
 									</div>
 								</div>
 								<div class="form-group">
@@ -156,8 +260,11 @@
 											<span class="input-group-addon"><i
 												class="glyphicon glyphicon-phone"></i></span> <input type="text"
 												class="form-control" name="phoneNumber" id="contactnum"
-												placeholder="Enter your Primary contact no." value="">
+												placeholder="Enter you
+												r Primary contact no."
+												value="">
 										</div>
+										<div class="check_font" id="phone_check"></div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -167,12 +274,13 @@
 											<input type="text" name="employCode" id="captcha"
 												class="form-control label-warning" />
 										</div>
+										<div class="check_font" id="employCode_check"></div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-xs-offset-3 col-xs-10">
-										<input name="Submit" type="submit" id="reg_submit" value="SignUp"
-											class="btn btn-primary">
+										<input name="Submit" type="submit" id="reg_submit"
+											value="SignUp" class="btn btn-primary">
 									</div>
 								</div>
 							</form>

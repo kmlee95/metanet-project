@@ -20,7 +20,8 @@
 	<!-- 회원가입 -->
 	<insert id="signup" parameterType="kr.co.metanet.dto.MemberDTO">
 		<selectKey keyProperty="bno" resultType="int" order="BEFORE">
-			SELECT no_seq.nextval From DUAL
+			SELECT
+			no_seq.nextval From DUAL
 		</selectKey>
 
 		insert into myMember (bno, userId,
@@ -46,8 +47,12 @@
 		#{userId}
 	</update>
 
+	<!-- 아이디 체크(유효성검사) -->
+	<select id="userIdCheck" parameterType="String" resultType="int">
+		select count(*) from myMember where userId = #{userId}
+	</select>
 
-	<!-- 유저 목록 불러오기, 전체 , 검색기능-->
+	<!-- 유저 목록 불러오기, 전체 , 검색기능 -->
 	<select id="getMemberList"
 		resultType="kr.co.metanet.dto.MemberDTO">
 		select
@@ -55,15 +60,18 @@
 		from
 		myMember
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="searchType=='userId' and keyword != null and keyword != '' ">
+			<if
+				test="searchType=='userId' and keyword != null and keyword != '' ">
 				AND userId like '%' || #{keyword} || '%'
 			</if>
-			<if test="searchType=='employCode' and keyword != null and keyword != '' ">
+			<if
+				test="searchType=='employCode' and keyword != null and keyword != '' ">
 				AND employCode like '%' || #{keyword} || '%'
 			</if>
-			<if test="searchType=='userName' and keyword != null and keyword != '' ">
+			<if
+				test="searchType=='userName' and keyword != null and keyword != '' ">
 				AND userName like '%' || #{keyword} || '%'
-			</if>	
+			</if>
 		</trim>
 	</select>
 
@@ -78,7 +86,8 @@
 
 	<!-- DETAIL버튼 클릭하여 유저 삭제 -->
 	<delete id="deleteMember" parameterType="String"> DELETE FROM myMember
-		WHERE employCode = #{employCode} </delete>
+		WHERE employCode = #{employCode}
+	</delete>
 
 </mapper>
 

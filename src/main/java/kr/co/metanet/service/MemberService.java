@@ -14,4 +14,7 @@ public interface MemberService {
 	
 	//로그아웃
 	public void logout(HttpSession session) throws Exception;
+	
+	//아이디 체크
+	public int userIdCheck(String userId) throws Exception;
 }

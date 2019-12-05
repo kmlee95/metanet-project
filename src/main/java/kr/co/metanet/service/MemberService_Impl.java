@@ -51,5 +51,11 @@ public class MemberService_Impl implements MemberService{
     public void logout(HttpSession session) throws Exception{
     	session.invalidate();
     }
+    
+    @Override
+ 	public int userIdCheck(String userId) throws Exception{
+ 		return dao.userIdCheck(userId);
+ 	}
+    
 }
 

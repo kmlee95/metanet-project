@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.metanet.dto.MemberDTO;
@@ -30,8 +32,9 @@ import kr.co.metanet.service.MemberService;
 public class HomeController {
 	@Autowired
 	MemberService service;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -75,7 +78,6 @@ public class HomeController {
 		return "redirect:/login";
 	}
 
-
 	// 로그아웃
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public String signout(HttpSession session) throws Exception {
@@ -84,26 +86,34 @@ public class HomeController {
 		return "redirect:/login";
 	}
 
-	
 	// 회원가입
 	@RequestMapping(value = "/login/signup")
 	public String signup() {
 		return "login/signup";
 	}
-	
-	@RequestMapping(value ="/login/signup", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/login/signup", method = RequestMethod.POST)
 	public String signup(MemberDTO dto) throws Exception {
 		logger.info(dto.getUserId());
 		service.signup(dto);
 		return "redirect:/login";
 
 	}
-	//회원가입 - 이메일 인증
-	@RequestMapping(value ="/login/emailConfirm", method = RequestMethod.GET)
+
+	// 회원가입 - 이메일 인증
+	@RequestMapping(value = "/login/emailConfirm", method = RequestMethod.GET)
 	public String emailConfirm(String userId, Model model) throws Exception { // 이메일 인증 확인창
 		service.userAuth(userId);
 		model.addAttribute("userId", userId);
 
-		return "/login/emailConfirm"; // emailConfirm.jsp
+		return "/login/emailConfirm"; 
 	}
+
+	// id 중복 체크 컨트롤러
+	@RequestMapping(value = "/login/idCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(@RequestParam("userId") String userId) throws Exception{
+		return service.userIdCheck(userId);
+	}
+
 }

@@ -176,7 +176,6 @@
 								<th scope="col">detail</th>
 							</tr>
 						</thead>
-						<tbody>
 							<c:choose>
 								<c:when test="${empty member}">
 									<tr>

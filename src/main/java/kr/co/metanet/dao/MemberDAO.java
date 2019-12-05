@@ -15,7 +15,8 @@ public interface MemberDAO {
 	public void createAuthKey(String userEmail, String authKey) throws Exception;
 	public void userAuth(String userEmail) throws Exception;
 	
-	
+	//아이디 check
+	public int userIdCheck(String userId) throws Exception;
 	
 	//계정관련 CRUD
 	public List<MemberDTO> getMemberList(Search search) throws Exception;
