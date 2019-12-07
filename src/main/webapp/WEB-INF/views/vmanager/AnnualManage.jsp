@@ -30,8 +30,13 @@
 				date = prompt("부여할 연차를 입력해주세요.");
 				
 				if(date == ""){
-					alert("입력한 값이 없어 기본 연차로 부여합니다.");
-					date = 15;
+					//alert("입력한 값이 없어 기본 연차로 부여합니다.");
+					//date = 15;
+					return;
+				}
+				else if(date == null){ //취소를 누를 경우
+					 
+					return;
 				}
 				else{
 					alert("수정되었습니다.");
@@ -64,7 +69,7 @@
 			if($("#check_all").is(':checked')){
 				$("input[name=v_checkbox]").prop("checked",true);
 			}
-			else{
+			else{ //전체 해제
 				$("input[name=v_checkbox]").prop("checked",false);
 			}
 		}

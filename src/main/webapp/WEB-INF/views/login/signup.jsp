@@ -48,7 +48,10 @@
 		var phoneJ = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
 		//사원코드 정규식
 		var employJ = /^E?([0-9]{4})$/;
-		
+
+		//회원가입 버튼 최종 체크
+		var signup_button = new Array(5).fill(false);
+
 		$(document).ready(function() {
 			$('#password').blur(function() {
 				if (pwJ.test($('#password').val())) {
@@ -90,11 +93,14 @@
 				if (employJ.test($(this).val())) {
 					$("#employCode_check").text('');
 				} else {
-					$('#employCode_check').text('사원코드는 필수 입력사항 입니다.');
+					$('#employCode_check').text('사원코드는 필수 입력사항(E0000)');
 					$('#employCode_check').css('color', 'red');
 				}
 			});
 			
+		
+				
+		
 			//아이디 검사
 			$("#userId").blur(function() {
 				var userId = $('#userId').val();
@@ -110,7 +116,6 @@
 								$("#reg_submit").attr("disabled", true);
 							} else {
 								if(mailJ.test(userId)){
-									// 0 : 아이디 길이 / 문자열 검사
 									$("#id_check").text("");
 									$("#reg_submit").attr("disabled", false);
 								} else if(userId == ""){
@@ -128,6 +133,56 @@
 						}
 					});
 				});
+
+
+			//아이디 체크
+			$('#reg_submit').click(function(){
+				// 비밀번호가 같은 경우 && 비밀번호 정규식
+				if (($('#password').val() == ($('#cpassword').val()))
+						&& pwJ.test($('#password').val())) {
+					signup_button[0] = true;
+				} else {
+					signup_button[0] = false;
+				}
+				// 이름 정규식
+				if (nameJ.test($('#mem_name').val())) {
+					signup_button[1] = true;	
+				} else {
+					signup_button[1] = false;
+				}
+				// 이메일 정규식
+				if (mailJ.test($('#userId').val())){
+					signup_button[2] = true;
+				} else {
+					signup_button[2] = false;
+				}
+				// 휴대폰번호 정규식
+				if (phoneJ.test($('#contactnum').val())) {
+					signup_button[3] = true;
+				} else {
+					signup_button[3] = false;
+				}
+				if (employJ.test($('#captcha').val())) {
+					signup_button[4] = true;
+				} else {
+					signup_button[4] = false;
+				}
+				
+				var validAll = true;
+				for(var i = 0; i < signup_button.length; i++){
+					if(signup_button[i] == false){
+						validAll = false;
+					}
+				}
+				if(validAll){ // 유효성 모두 통과
+					alert('인증 메일이 전송되었습니다. 확인해 주세요');
+					$("#reg_submit").attr("disabled", false);
+
+				} else{
+					alert('회원가입 정보를 다시 확인해 주세요')
+					$("#reg_submit").attr("disabled", true);
+				}
+			});	
 		});
 	</script>
 
@@ -137,12 +192,12 @@
 				<div class="row">
 					<div class="col-md-8">
 						<section>
+							<img src="/resources/img/loading.gif" id="img" style="display:none" />
 							<h1 class="entry-title">
 								<span>Sign Up</span>
 							</h1>
 							<hr>
-							<form class="form-horizontal" method="post" name="signup"
-								action="/login/signup" id="signup">
+							<form class="form-horizontal" method="post" name="signup" id="signup">
 								<div class="form-group">
 									<label class="control-label col-sm-3">Email ID <span
 										class="text-danger">*</span></label>

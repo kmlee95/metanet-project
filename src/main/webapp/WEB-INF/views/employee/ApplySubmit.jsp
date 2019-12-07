@@ -141,6 +141,9 @@
 	background-color: #fff;
 	background-clip: padding-box;
 }
+.form-group-div>p>img{
+	margin-left:15px;
+}
 </style>
 
 </head>
