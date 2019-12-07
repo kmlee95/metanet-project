@@ -133,7 +133,7 @@
 						}
 					});
 				});
-
+			
 
 			//아이디 체크
 			$('#reg_submit').click(function(){
@@ -175,7 +175,29 @@
 					}
 				}
 				if(validAll){ // 유효성 모두 통과
-					alert('인증 메일이 전송되었습니다. 확인해 주세요');
+					$("#img").show()
+					var url = "/login/signupcheck";
+					var paramData = {
+							"userId" : $("#userId").val(),
+							"userPass" : $("#userPass").val(),
+							"userName" : $("#userName").val(),
+							"regDate" : $("#regDate").val(),
+							"org_code" : $("#org_code option:selected").val(),
+							"emp_rank" : $("#emp_rank option:selected").val(),
+							"gender" : $('input[name="gender"]:checked').val(),
+							"phoneNumber" : $("#phoneNumber").val(),
+							"employCode" : $("#captcha").val()
+					};
+					$.ajax({
+						url : url,
+						type : "POST",
+						dataType : "json",
+						data : paramData,
+						success : function(result) {
+							$("#img").hide();
+							alert("이메일 전송 완료");
+						}
+					})
 					$("#reg_submit").attr("disabled", false);
 
 				} else{
@@ -197,7 +219,7 @@
 								<span>Sign Up</span>
 							</h1>
 							<hr>
-							<form class="form-horizontal" method="post" name="signup" id="signup">
+							<form class="form-horizontal" name="signup" id="signup">
 								<div class="form-group">
 									<label class="control-label col-sm-3">Email ID <span
 										class="text-danger">*</span></label>

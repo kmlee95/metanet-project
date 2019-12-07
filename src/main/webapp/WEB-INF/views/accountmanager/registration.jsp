@@ -65,13 +65,13 @@
 								$("#userPass").val(userPass);
 								$("#userName").val(userName);
 								$("#regDate").val(regDate);
-								$("input:radio[name='gender']").val(gender)
-										.prop("checked", true);
+								$('input:radio[name="gender"]:input[value=' + gender + ']').attr("checked", true);
 								$("#phoneNumber").val(phoneNumber);
 								$("#org_code").val(org_code).prop("selected",
 										true);
 								$("#emp_rank").val(emp_rank).prop("selected",
 										true);
+								
 
 								$("#exampleModal").modal();
 

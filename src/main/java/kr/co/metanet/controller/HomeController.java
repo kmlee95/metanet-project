@@ -3,7 +3,9 @@ package kr.co.metanet.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -92,14 +94,21 @@ public class HomeController {
 		return "login/signup";
 	}
 
-	@RequestMapping(value = "/login/signup", method = RequestMethod.POST)
-	public String signup(MemberDTO dto) throws Exception {
+	@RequestMapping(value = "/login/signupcheck", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> signup(MemberDTO dto) throws Exception {
 		logger.info(dto.getUserId());
-		service.signup(dto);
-		return "redirect:/login";
-
+		Map<String, Object> result = new HashMap<>();
+		try {
+			service.signup(dto);
+			result.put("status", "OK");
+		}catch (Exception e) {
+			result.put("status", "False");
+		}
+		return result;
 	}
 
+	
 	// 회원가입 - 이메일 인증
 	@RequestMapping(value = "/login/emailConfirm", method = RequestMethod.GET)
 	public String emailConfirm(String userId, Model model) throws Exception { // 이메일 인증 확인창
