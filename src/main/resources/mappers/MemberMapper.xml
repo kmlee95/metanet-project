@@ -10,11 +10,13 @@
 		select
 		*
 		from
-		myMember
-		where userId =
-		#{userId}
-		and userPass = #{userPass}
-		and verify = 1
+		tb_Employee a, tb_account_normal b, tb_organization c
+		where b.id =
+		#{id}
+		and b.password = #{password}
+		and certified_yn = 'Y'
+		and a.emp_code = b.emp_code
+		and a.org_code = c.org_code
 	</select>
 
 	<!-- 회원가입 -->
@@ -24,32 +26,32 @@
 			no_seq.nextval From DUAL
 		</selectKey>
 
-		insert into myMember (bno, userId,
-		userPass, userName, regDate, gender,
-		employCode, phoneNumber,
+		insert into myMember (bno, id,
+		password, name, join_date, gender,
+		emp_code, phone,
 		org_code, emp_rank)
-		values (#{bno}, #{userId},
-		#{userPass}, #{userName},
-		#{regDate}, #{gender}, #{employCode},
-		#{phoneNumber}, #{org_code},
+		values (#{bno}, #{id},
+		#{password}, #{name},
+		#{join_date}, #{gender}, #{emp_code},
+		#{phone}, #{org_code},
 		#{emp_rank})
 
 	</insert>
 
 	<!-- 회원가입 이메일 인증 -->
 	<update id="createAuthKey">
-		update myMember set verify = #{authKey} where userId
-		= #{userId}
+		update myMember set verify = #{authKey} where id
+		= #{id}
 	</update>
 
 	<update id="userAuth">
-		update myMember set verify = 1 where userId =
-		#{userId}
+		update myMember set verify = 1 where id =
+		#{id}
 	</update>
 
 	<!-- 아이디 체크(유효성검사) -->
-	<select id="userIdCheck" parameterType="String" resultType="int">
-		select count(*) from myMember where userId = #{userId}
+	<select id="idCheck" parameterType="String" resultType="int">
+		select count(*) from myMember where id = #{id}
 	</select>
 
 	<!-- 유저 목록 불러오기, 전체 , 검색기능 -->
@@ -61,16 +63,16 @@
 		myMember
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if
-				test="searchType=='userId' and keyword != null and keyword != '' ">
-				AND userId like '%' || #{keyword} || '%'
+				test="searchType=='id' and keyword != null and keyword != '' ">
+				AND id like '%' || #{keyword} || '%'
 			</if>
 			<if
-				test="searchType=='employCode' and keyword != null and keyword != '' ">
-				AND employCode like '%' || #{keyword} || '%'
+				test="searchType=='emp_code' and keyword != null and keyword != '' ">
+				AND emp_code like '%' || #{keyword} || '%'
 			</if>
 			<if
-				test="searchType=='userName' and keyword != null and keyword != '' ">
-				AND userName like '%' || #{keyword} || '%'
+				test="searchType=='name' and keyword != null and keyword != '' ">
+				AND name like '%' || #{keyword} || '%'
 			</if>
 		</trim>
 	</select>
@@ -78,15 +80,15 @@
 
 	<!-- DETAIL버튼 클릭하여 유저 업데이트 -->
 	<update id="updateMember"
-		parameterType="kr.co.metanet.dto.MemberDTO"> UPDATE myMember SET userId = #{userId} , userPass =
-		#{userPass} , userName = #{userName}, regDate = #{regDate}, gender =
-		#{gender}, phoneNumber = #{phoneNumber}, org_code = #{org_code},
-		emp_rank = #{emp_rank} WHERE employCode = #{employCode}
+		parameterType="kr.co.metanet.dto.MemberDTO"> UPDATE myMember SET id = #{id} , password =
+		#{password} , name = #{name}, join_date = #{join_date}, gender =
+		#{gender}, phone = #{phone}, org_code = #{org_code},
+		emp_rank = #{emp_rank} WHERE emp_code = #{emp_code}
 	</update>
 
 	<!-- DETAIL버튼 클릭하여 유저 삭제 -->
 	<delete id="deleteMember" parameterType="String"> DELETE FROM myMember
-		WHERE employCode = #{employCode}
+		WHERE emp_code = #{emp_code}
 	</delete>
 
 </mapper>

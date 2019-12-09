@@ -97,7 +97,7 @@ public class HomeController {
 	@RequestMapping(value = "/login/signupcheck", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public Map<String, Object> signup(MemberDTO dto) throws Exception {
-		logger.info(dto.getUserId());
+		logger.info(dto.getId());
 		Map<String, Object> result = new HashMap<>();
 		try {
 			service.signup(dto);

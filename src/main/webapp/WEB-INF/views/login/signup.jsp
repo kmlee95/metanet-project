@@ -175,17 +175,16 @@
 					}
 				}
 				if(validAll){ // 유효성 모두 통과
-					$("#img").show()
 					var url = "/login/signupcheck";
 					var paramData = {
 							"userId" : $("#userId").val(),
-							"userPass" : $("#userPass").val(),
-							"userName" : $("#userName").val(),
-							"regDate" : $("#regDate").val(),
+							"userPass" : $("#password").val(),
+							"userName" : $("#mem_name").val(),
+							"regDate" : $("#enter_date").val(),
 							"org_code" : $("#org_code option:selected").val(),
 							"emp_rank" : $("#emp_rank option:selected").val(),
 							"gender" : $('input[name="gender"]:checked').val(),
-							"phoneNumber" : $("#phoneNumber").val(),
+							"phoneNumber" : $("#contactnum").val(),
 							"employCode" : $("#captcha").val()
 					};
 					$.ajax({
@@ -194,9 +193,16 @@
 						dataType : "json",
 						data : paramData,
 						success : function(result) {
-							$("#img").hide();
+							
 							alert("이메일 전송 완료");
+						},
+						beforeSend:function(){
+							$("#img").show()
+						},
+						complete:function(){
+							$("#img").hide();
 						}
+						
 					})
 					$("#reg_submit").attr("disabled", false);
 
@@ -275,7 +281,7 @@
 										class="text-danger">*</span></label>
 									<div class="col-md-5 col-sm-8">
 										<div class="form-inline">
-											<select name="org_code" class="form-control">
+											<select id="org_code" name="org_code" class="form-control">
 												<option value="">부서</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
@@ -296,7 +302,7 @@
 										class="text-danger">*</span></label>
 									<div class="col-md-5 col-sm-8">
 										<div class="form-inline">
-											<select name="emp_rank" class="form-control">
+											<select id="emp_rank" name="emp_rank" class="form-control">
 												<option value="">직급</option>
 												<option value="사원">사원</option>
 												<option value="대리">대리</option>

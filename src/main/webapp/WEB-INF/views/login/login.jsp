@@ -27,12 +27,12 @@
 				<form method="post" action="/login" id="loginForm">
 					<div class="form-group">
 						<!-- 나중에 아이디 저장 구현 -->
-						<input type="text" name="userId" class="form-control" id="userId"
+						<input type="text" name="id" class="form-control" id="id"
 							placeholder="Your Email" value="" />
 					</div>
 					<div class="form-group">
-						<input type="password" name="userPass" class="form-control"
-							id="userPass" placeholder="Your Password" value="" />
+						<input type="password" name="password" class="form-control"
+							id="password" placeholder="Your Password" value="" />
 					</div>
 					<div class="form-group" style="text-align: center">
 						<input type="submit" id="loginSubmit" class="btnSubmit"

@@ -4,71 +4,83 @@ import java.sql.Date;
 
 public class MemberDTO {
 	private int bno;
-	private String userId;
-    private String userPass;
-    private String userName;
-    private Date regDate;
-    private String gender;
-    private String phoneNumber;
-	private String employCode;
-	private String org_code;
-	private String emp_rank;
-
-	private String verify;
-
-    public int getBno() {
+	private String id;  // 아이디
+	private String id_code; //아이디 코드
+    private String password; //비밀번호
+    private String name; //이름
+    private Date join_date; //입사일
+    private String gender; //성별
+    private String phone; //휴대폰번호 
+	private String emp_code; //사원코드
+	private String emp_use_yn; // 사용 유무
+	private String org_code; //조직 코드
+	private String emp_rank; //사원 직위
+	private String certified_yn; //인증여부
+	
+	private String org_name;//조직이름
+	
+	
+	
+	
+	public int getBno() {
 		return bno;
 	}
 	public void setBno(int bno) {
 		this.bno = bno;
 	}
-	public String getUserId() {
-		return userId;
+	public String getId() {
+		return id;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getUserPass() {
-		return userPass;
+	public String getId_code() {
+		return id_code;
 	}
-	public void setUserPass(String userPass) {
-		this.userPass = userPass;
+	public void setId_code(String id_code) {
+		this.id_code = id_code;
 	}
-	public String getUserName() {
-		return userName;
+	public String getPassword() {
+		return password;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public Date getRegDate() {
-		return regDate;
+	public String getName() {
+		return name;
 	}
-	public void setRegDate(Date regDate) {
-		this.regDate = regDate;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getVerify() {
-		return verify;
+	public Date getJoin_date() {
+		return join_date;
 	}
-	public void setVerify(String verify) {
-		this.verify = verify;
+	public void setJoin_date(Date join_date) {
+		this.join_date = join_date;
 	}
-    public String getGender() {
+	public String getGender() {
 		return gender;
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getPhone() {
+		return phone;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public String getEmployCode() {
-		return employCode;
+	public String getEmp_code() {
+		return emp_code;
 	}
-	public void setEmployCode(String employCode) {
-		this.employCode = employCode;
+	public void setEmp_code(String emp_code) {
+		this.emp_code = emp_code;
+	}
+	public String getEmp_use_yn() {
+		return emp_use_yn;
+	}
+	public void setEmp_use_yn(String emp_use_yn) {
+		this.emp_use_yn = emp_use_yn;
 	}
 	public String getOrg_code() {
 		return org_code;
@@ -82,4 +94,12 @@ public class MemberDTO {
 	public void setEmp_rank(String emp_rank) {
 		this.emp_rank = emp_rank;
 	}
+	public String getCertified_yn() {
+		return certified_yn;
+	}
+	public void setCertified_yn(String certified_yn) {
+		this.certified_yn = certified_yn;
+	}
+
+
 }

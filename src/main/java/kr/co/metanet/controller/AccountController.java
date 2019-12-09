@@ -22,12 +22,10 @@ public class AccountController {
 	public String getMemberList(Model model, @RequestParam(required = false, defaultValue = "userId") String searchType,
 			@RequestParam(required = false) String keyword) throws Exception {
 		
-		
 		Search search = new Search();
 		search.setSearchType(searchType);
 		search.setKeyword(keyword);
 
-		
 		model.addAttribute("member", accountService.getMemberList(search));
 		return "accountmanager/registration";
 	}

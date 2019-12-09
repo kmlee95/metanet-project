@@ -30,14 +30,14 @@ public class MemberService_Impl implements MemberService{
     public void signup(MemberDTO dto) throws Exception{
     	dao.signup(dto);
     	String key = new TempKey().getKey(50, false); // 인증키 생성
-    	dao.createAuthKey(dto.getUserId(), key); // 인증키 DB저장
+    	dao.createAuthKey(dto.getId(), key); // 인증키 DB저장
     	MailHandler sendMail = new MailHandler(mailSender);
     	sendMail.setSubject("[Mentanet User 홈페이지 이메일 인증]"); // 메일제목
     	sendMail.setText( // 메일내용
     			new StringBuffer().append("<h1>메일인증</h1>").append("<a href='http://localhost:8080/login/emailConfirm?userId=")
-    			.append(dto.getUserId()).append("&key=").append(key).append("' target='_blenk'>이메일 인증 확인</a>").toString());
+    			.append(dto.getId()).append("&key=").append(key).append("' target='_blenk'>이메일 인증 확인</a>").toString());
     	sendMail.setFrom("kmlee95@gmail.com", "이경민"); // 보낸이
-    	sendMail.setTo(dto.getUserId()); // 받는이
+    	sendMail.setTo(dto.getId()); // 받는이
     	sendMail.send();
     }
     
