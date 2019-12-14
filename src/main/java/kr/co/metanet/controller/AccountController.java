@@ -19,14 +19,16 @@ public class AccountController {
 	private AccountService accountService;
 
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
-	public String getMemberList(Model model, @RequestParam(required = false, defaultValue = "userId") String searchType,
+	public String getMemberList(Model model, @RequestParam(required = false, defaultValue = "id") String searchType,
 			@RequestParam(required = false) String keyword) throws Exception {
 		
 		Search search = new Search();
 		search.setSearchType(searchType);
 		search.setKeyword(keyword);
 
-		model.addAttribute("member", accountService.getMemberList(search));
+		model.addAttribute("member", accountService.getMemberList(search)); //유저 리스트
+		
+		model.addAttribute("authority", accountService.getAuthorityList()); //권한 리스트
 		return "accountmanager/registration";
 	}
 

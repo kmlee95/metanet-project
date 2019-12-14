@@ -8,13 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script type="text/javascript">
-		var userEmail = '${member.userId}';
-
-		alert(userId + '님 회원가입을 축하합니다. 이제 로그인이 가능 합니다.');
-
-		window.open('', '_self', ''); // 브라우저창 닫기
-		window.close(); // 브라우저 창 닫기
-	</script>
+	<h2>인증 성공! 아래의 링크를 클릭하시면 홈페이지로 이동 </h2>
+	<a href="http://localhost:8080/login"> 휴가관리 시스템 페이지 </a>
 </body>
 </html>

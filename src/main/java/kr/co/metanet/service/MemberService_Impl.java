@@ -1,50 +1,53 @@
 package kr.co.metanet.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.metanet.dao.MemberDAO;
 import kr.co.metanet.dto.MemberDTO;
 
 @Service
 public class MemberService_Impl implements MemberService{
- 
+	
     @Autowired
     MemberDAO dao;
     
-    @Inject
+    @Autowired
     private JavaMailSender mailSender;
     
+    //로그인 확인
     @Override
     public MemberDTO login(MemberDTO dto) throws Exception{
     	return dao.login(dto);
     }
     
-    //회원가입
+    //회원가입 + 이메일 전송
     @Override
     public void signup(MemberDTO dto) throws Exception{
     	dao.signup(dto);
-    	String key = new TempKey().getKey(50, false); // 인증키 생성
-    	dao.createAuthKey(dto.getId(), key); // 인증키 DB저장
+  
+    	String key = new TempKey().getKey(50, false);
+    	dao.createAuthKey(dto.getId(), key); 
     	MailHandler sendMail = new MailHandler(mailSender);
-    	sendMail.setSubject("[Mentanet User 홈페이지 이메일 인증]"); // 메일제목
-    	sendMail.setText( // 메일내용
-    			new StringBuffer().append("<h1>메일인증</h1>").append("<a href='http://localhost:8080/login/emailConfirm?userId=")
+    	System.out.println(key);
+    	sendMail.setSubject("[Mentanet User 회원가입 인증메일]");
+    	sendMail.setText( 
+    			new StringBuffer().append("<h1>안녕하세요. 인증을 하시려면 아래 링크를 클릭!</h1>").append("<a href='http://localhost:8080/login/emailConfirm?id=")
     			.append(dto.getId()).append("&key=").append(key).append("' target='_blenk'>이메일 인증 확인</a>").toString());
-    	sendMail.setFrom("kmlee95@gmail.com", "이경민"); // 보낸이
-    	sendMail.setTo(dto.getId()); // 받는이
+    	sendMail.setFrom("kmlee95@gmail.com", "이경민"); 
+    	sendMail.setTo(dto.getId()); 
     	sendMail.send();
     }
     
     
     @Override
-    public void userAuth(String userId) throws Exception {
-    	dao.userAuth(userId);
+    public void userAuth(String id) throws Exception {
+    	dao.userAuth(id);
     }
     
     @Override
@@ -53,9 +56,20 @@ public class MemberService_Impl implements MemberService{
     }
     
     @Override
- 	public int userIdCheck(String userId) throws Exception{
- 		return dao.userIdCheck(userId);
+ 	public int userIdCheck(String id) throws Exception{
+ 		return dao.userIdCheck(id);
  	}
-    
+    @Override
+ 	public int userIdCodeCheck(String id_code) throws Exception{
+ 		return dao.userIdCodeCheck(id_code);
+ 	}
+    @Override
+ 	public MemberDTO empCodeCheck(String emp_code) throws Exception{
+ 		return dao.empCodeCheck(emp_code);
+ 	}
+	@Override
+	public List<MemberDTO> getEmpCodeList() throws Exception {
+		return dao.getEmpCodeList();
+	}
 }
 

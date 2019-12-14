@@ -1,32 +1,105 @@
 package kr.co.metanet.dto;
 
-import java.sql.Date;
-
 public class MemberDTO {
-	private int bno;
-	private String id;  // 아이디
-	private String id_code; //아이디 코드
+	private String id;  //
+	private String id_code; //id_code
     private String password; //비밀번호
     private String name; //이름
-    private Date join_date; //입사일
+    private String join_date; //입사일자
+    private String id_use_yn;//아이디 사용
     private String gender; //성별
-    private String phone; //휴대폰번호 
+    private String phone; //휴대폰 
 	private String emp_code; //사원코드
-	private String emp_use_yn; // 사용 유무
-	private String org_code; //조직 코드
-	private String emp_rank; //사원 직위
-	private String certified_yn; //인증여부
+	private String emp_use_yn; //emp 유효일자
+	private String emp_rank; // 사원등급(부장, 이사 등등)
+	private String certified_yn; //인증
+	private String org_code; // 부서 코드
 	
-	private String org_name;//조직이름
+	private String org_name;//議곗쭅 �씠由�
+	private String org_div; //議곗쭅 援щ텇
+	private String org_upper; //�긽�쐞 議곗쭅
+	
+	private int acq_days_num;//諛쒖깮�씪�닔
+	private int use_days_num;//�궗�슜�씪�닔
+	private int res_days_num;//�옍�뿬�씪�닔
+	
+	
+	private String id_effective_start_date;//유효시작날자
+	private String id_effective_end_date; //유효종료날자
+	
+	private String id_create_id_code;//생성자 아이디 코드
+	private String id_update_id_code;//변경자 아이디 코드
 	
 	
 	
 	
-	public int getBno() {
-		return bno;
+	
+	public String getId_effective_start_date() {
+		return id_effective_start_date;
 	}
-	public void setBno(int bno) {
-		this.bno = bno;
+	public void setId_effective_start_date(String id_effective_start_date) {
+		this.id_effective_start_date = id_effective_start_date;
+	}
+
+	public String getId_effective_end_date() {
+		return id_effective_end_date;
+	}
+	public void setId_effective_end_date(String id_effective_end_date) {
+		this.id_effective_end_date = id_effective_end_date;
+	}
+	public String getId_use_yn() {
+		return id_use_yn;
+	}
+	public void setId_use_yn(String id_use_yn) {
+		this.id_use_yn = id_use_yn;
+	}
+	public String getId_create_id_code() {
+		return id_create_id_code;
+	}
+	public void setId_create_id_code(String id_create_id_code) {
+		this.id_create_id_code = id_create_id_code;
+	}
+	public String getId_update_id_code() {
+		return id_update_id_code;
+	}
+	public void setId_update_id_code(String id_update_id_code) {
+		this.id_update_id_code = id_update_id_code;
+	}
+	public int getAcq_days_num() {
+		return acq_days_num;
+	}
+	public void setAcq_days_num(int acq_days_num) {
+		this.acq_days_num = acq_days_num;
+	}
+	public int getUse_days_num() {
+		return use_days_num;
+	}
+	public void setUse_days_num(int use_days_num) {
+		this.use_days_num = use_days_num;
+	}
+	public int getRes_days_num() {
+		return res_days_num;
+	}
+	public void setRes_days_num(int res_days_num) {
+		this.res_days_num = res_days_num;
+	}
+	public String getOrg_name() {
+		return org_name;
+	}
+	public void setOrg_name(String org_name) {
+		this.org_name = org_name;
+	}
+	public String getOrg_div() {
+		return org_div;
+	}
+	public void setOrg_div(String org_div) {
+		this.org_div = org_div;
+	}
+	public String getOrg_upper() {
+		return org_upper;
+	}
+	public void setOrg_upper(String org_upper) {
+		this.org_upper = org_upper;
 	}
 	public String getId() {
 		return id;
@@ -52,10 +125,10 @@ public class MemberDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getJoin_date() {
+	public String getJoin_date() {
 		return join_date;
 	}
-	public void setJoin_date(Date join_date) {
+	public void setJoin_date(String join_date) {
 		this.join_date = join_date;
 	}
 	public String getGender() {

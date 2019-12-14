@@ -41,3 +41,13 @@ body {
 .tableBox {
 	margin : 15px;
 }
+
+.my-custom-scrollbar {
+	position: relative;
+	height: 100px;
+	overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+	display: block;
+}

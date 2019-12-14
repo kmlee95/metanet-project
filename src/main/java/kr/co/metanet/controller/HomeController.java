@@ -1,7 +1,6 @@
 package kr.co.metanet.controller;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -89,21 +88,31 @@ public class HomeController {
 	}
 
 	// 회원가입
-	@RequestMapping(value = "/login/signup")
-	public String signup() {
+	@RequestMapping(value ="/login/signup", method = RequestMethod.POST)
+	public String signups(MemberDTO dto) throws Exception {
+		service.signup(dto);
+		return "redirect:/login/signup";
+
+	}
+	
+	@RequestMapping(value = "/login/signup", method = RequestMethod.GET)
+	public String signup(Model model) throws Exception {
+		model.addAttribute("empCodeList", service.getEmpCodeList());
 		return "login/signup";
 	}
-
+    
 	@RequestMapping(value = "/login/signupcheck", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public Map<String, Object> signup(MemberDTO dto) throws Exception {
-		logger.info(dto.getId());
+		logger.info(dto.getEmp_code());
 		Map<String, Object> result = new HashMap<>();
 		try {
 			service.signup(dto);
 			result.put("status", "OK");
+			System.out.println("성공");
 		}catch (Exception e) {
 			result.put("status", "False");
+			System.out.println("실패");
 		}
 		return result;
 	}
@@ -111,9 +120,9 @@ public class HomeController {
 	
 	// 회원가입 - 이메일 인증
 	@RequestMapping(value = "/login/emailConfirm", method = RequestMethod.GET)
-	public String emailConfirm(String userId, Model model) throws Exception { // 이메일 인증 확인창
-		service.userAuth(userId);
-		model.addAttribute("userId", userId);
+	public String emailConfirm(String id, Model model) throws Exception { // 이메일 인증 확인창
+		service.userAuth(id);
+		model.addAttribute("id", id);
 
 		return "/login/emailConfirm"; 
 	}
@@ -121,8 +130,22 @@ public class HomeController {
 	// id 중복 체크 컨트롤러
 	@RequestMapping(value = "/login/idCheck", method = RequestMethod.GET)
 	@ResponseBody
-	public int idCheck(@RequestParam("userId") String userId) throws Exception{
-		return service.userIdCheck(userId);
+	public int idCheck(@RequestParam("id") String id) throws Exception{
+		return service.userIdCheck(id);
 	}
 
+	// id code중복 체크 컨트롤러
+	@RequestMapping(value = "/login/idCodeCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCodeCheck(@RequestParam("id_code") String id_code) throws Exception{
+		return service.userIdCodeCheck(id_code);
+	}
+	
+	// emp code중복 체크 컨트롤러
+	@RequestMapping(value ="/login/empCodeCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public MemberDTO empCodeCheck(Model model, @RequestParam("emp_code") String emp_code) throws Exception{
+		return service.empCodeCheck(emp_code);
+	}
+	
 }

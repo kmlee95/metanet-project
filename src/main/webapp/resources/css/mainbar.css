@@ -6,8 +6,6 @@
 
 body {
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   word-break: break-all;
   background: #dedede !important;
   font-family: "Ubuntu", sans-serif;

@@ -15,8 +15,6 @@
 <link href="/resources/vendor/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 
-<!-- icon -->
-
 <!-- fonts -->
 <link href="https://fonts.googleapis.com/css?family=Heebo|Noto+Sans+KR"
 	rel="stylesheet">

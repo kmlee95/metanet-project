@@ -65,7 +65,7 @@
 					</table>
 					<!-- Button trigger modal -->
 					<button type="button" class="btn btn-secondary btn-apply"
-						data-toggle="modal" data-target="#exampleModal" color="#e9ecef">휴가 신청</button>
+						data-toggle="modal" data-target="#exampleModal">휴가 신청</button>
 
 					<!-- Modal -->
 					<div class="modal fade" id="exampleModal" tabindex="-1"

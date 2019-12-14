@@ -24,6 +24,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-6 login-form-1">
 				<h3>휴가관리 시스템 로그인</h3>
+				
 				<form method="post" action="/login" id="loginForm">
 					<div class="form-group">
 						<!-- 나중에 아이디 저장 구현 -->

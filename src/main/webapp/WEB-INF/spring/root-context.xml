@@ -20,10 +20,10 @@
 		id="dataSource">
 		<property value="oracle.jdbc.driver.OracleDriver"
 			name="driverClassName" />
-		<property value="jdbc:oracle:thin:@10.245.18.28:1521:orcl"
+		<property value="jdbc:oracle:thin:@localhost:1521:xe"
 			name="url" />
-		<property value="mini" name="username" /><!-- DB User -->
-		<property value="1234" name="password" /><!-- DB User Password -->
+		<property value="hr" name="username" /><!-- DB User -->
+		<property value="hr" name="password" /><!-- DB User Password -->
 	</bean>
 
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
