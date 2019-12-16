@@ -13,7 +13,6 @@ public class AccountService_Impl implements AccountService {
 	@Inject
 	private MemberDAO memberDAO;
 
-
 	//유저 리스트
 	public List<MemberDTO> getMemberList(Search search) throws Exception {
 		return memberDAO.getMemberList(search);
@@ -23,6 +22,7 @@ public class AccountService_Impl implements AccountService {
 	public void updateMember(MemberDTO dto) throws Exception {
 		memberDAO.updateMember(dto);
 	}
+	
 	//유저 리스트 삭제(하나씩)
 	@Override
 	public void deleteMember(String employCode) throws Exception {
@@ -35,4 +35,11 @@ public class AccountService_Impl implements AccountService {
 		return memberDAO.getAuthorityList();
 	}
 
+	//권한 업데이트
+	@Override
+	public void updateAuthority(AuthorityDTO dto) throws Exception{
+		memberDAO.updateAuthority(dto);
+	}
+	
+	
 }

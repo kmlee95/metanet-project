@@ -11,6 +11,7 @@ public interface MemberService {
 	public void signup(MemberDTO dto) throws Exception;
 	public void userAuth(String id) throws Exception;
 	
+	 public void signupguest(MemberDTO dto) throws Exception;
 	
 	//로그아웃
 	public void logout(HttpSession session) throws Exception;
@@ -20,6 +21,7 @@ public interface MemberService {
 	
 	//아이디 코드 체크
 	public int userIdCodeCheck(String id_code) throws Exception;
+
 	
 	//emp code check
 	public MemberDTO empCodeCheck(String emp_code) throws Exception;

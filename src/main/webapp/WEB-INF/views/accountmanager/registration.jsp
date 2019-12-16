@@ -130,7 +130,38 @@
 						});
 					});
 					
-
+					//authority 권한 수정, save
+					$("#authModalSave").click(function(e){
+						e.preventDefault();
+						var url = "/login/account/updateAuthority";
+						if($("#id_code_auth").val()!= 0){
+							var url = "/login/account/updateAuthority";
+						}
+						var paramData = {
+							"id_code_auth" : $("#id_code_auth").val(),
+							"emp_code_auth" : $("#emp_code_auth").val(),
+							"AG0001" : $('input[name="AG0001"]:checked').val(),
+							"AG0002" : $('input[name="AG0002"]:checked').val(),
+							"AG0003" : $('input[name="AG0003"]:checked').val(),
+							"AG0004" : $('input[name="AG0004"]:checked').val(),
+							"AG0001_end_date" : $("#AG0001_end_date").val(),
+							"AG0002_end_date" : $("#AG0002_end_date").val(),
+							"AG0003_end_date" : $("#AG0003_end_date").val(),
+							"AG0004_end_date" : $("#AG0004_end_date").val(),
+						};
+						$.ajax({
+							url : url,
+							type : "POST",
+							dataType : "json",
+							data : paramData,
+							success : function(result) {
+								$("#authorityModal").modal('toggle');
+								location.reload();
+							}
+						});
+					});
+						
+					
 					//수정 및 save(계정)
 					$("#modalSave").click(function(e) {
 						e.preventDefault();
@@ -448,9 +479,9 @@
 						</tr>
 						<tr>
 							<td style="font-size:12px; font-weight:bold;">일반 사용자</td>
-							<td><label> <input name="AG0001" type="radio"
+							<td><label> <input name="AG0001" id="AG0001" type="radio"
 									value="Y"> Y
-							</label>     <label> <input name="AG0001" type="radio"
+							</label>     <label> <input name="AG0001" id="AG0001" type="radio"
 									value="N"> N
 							</label></td>
 							
@@ -459,9 +490,9 @@
 						</tr>
 						<tr>
 							<td style="font-size:12px; font-weight:bold;">휴가 승인자</td>
-							<td><label> <input name="AG0002" type="radio"
+							<td><label> <input name="AG0002" id="AG0002" type="radio"
 									value="Y"> Y
-							</label>     <label> <input name="AG0002" type="radio"
+							</label>     <label> <input name="AG0002" id="AG0002" type="radio"
 									value="N"> N
 							</label></td>
 							
@@ -470,9 +501,9 @@
 						</tr>
 						<tr>
 							<td style="font-size:12px; font-weight:bold;">휴가업무 관리자</td>
-							<td><label> <input name="AG0003" type="radio"
+							<td><label> <input name="AG0003" id="AG0003" type="radio"
 									value="Y"> Y
-							</label>     <label> <input name="AG0003" type="radio"
+							</label>     <label> <input name="AG0003" id="AG0003" type="radio"
 									value="N"> N
 							</label></td>
 							
@@ -481,9 +512,9 @@
 						</tr>
 						<tr>
 							<td style="font-size:12px; font-weight:bold;">계정 관리자</td>
-							<td><label> <input name="AG0004" type="radio"
+							<td><label> <input name="AG0004" id="AG0004" type="radio"
 									value="Y"> Y
-							</label>     <label> <input name="AG0004" type="radio"
+							</label>     <label> <input name="AG0004" id="AG0004" type="radio"
 									value="N"> N
 							</label></td>
 							

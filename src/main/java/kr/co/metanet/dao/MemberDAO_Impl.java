@@ -29,7 +29,11 @@ public class MemberDAO_Impl implements MemberDAO {
 	public void signup(MemberDTO dto) throws Exception {
 		sql.insert(NAMESPACE+ ".signup", dto);
 	}
-
+	@Override
+	public void signupguest(MemberDTO dto) throws Exception {
+		sql.insert(NAMESPACE+ ".signupguest", dto);
+	}
+	
 	// 회원가입 이메일 인증 - 임시 데이터
 	@Override
 	public void createAuthKey(String id, String authKey) throws Exception { // 인증키 DB에 넣기
@@ -57,6 +61,8 @@ public class MemberDAO_Impl implements MemberDAO {
 	public int userIdCodeCheck(String id_code) throws Exception{
 		return sql.selectOne(NAMESPACE+ ".idCodeCheck", id_code);
 	}
+
+	
 	//emp Code check
 	@Override
 	public MemberDTO empCodeCheck(String emp_code) throws Exception{
@@ -86,11 +92,13 @@ public class MemberDAO_Impl implements MemberDAO {
 	public List<MemberDTO> getEmpCodeList() throws Exception{
 		return sql.selectList(NAMESPACE + ".getEmpCodeList");
 	}
-	
-	
 	//권한 리스트
 	public List<AuthorityDTO> getAuthorityList() throws Exception{
 		return sql.selectList(NAMESPACE + ".getAuthList");
+	}
+	//권한 업데이트
+	public int updateAuthority(AuthorityDTO dto) throws Exception {
+		return sql.update(NAMESPACE+ ".updateAuthority", dto);
 	}
 
 }

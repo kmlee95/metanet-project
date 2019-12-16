@@ -100,7 +100,7 @@ public class HomeController {
 		model.addAttribute("empCodeList", service.getEmpCodeList());
 		return "login/signup";
 	}
-    
+    // 회원가입 - 일반 사원
 	@RequestMapping(value = "/login/signupcheck", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public Map<String, Object> signup(MemberDTO dto) throws Exception {
@@ -116,7 +116,22 @@ public class HomeController {
 		}
 		return result;
 	}
-
+	//회원가입 - 게스트
+	@RequestMapping(value = "/login/signupcheckguest", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> signupguest(MemberDTO dto) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			service.signupguest(dto);
+			result.put("status", "OK");
+			System.out.println("성공");
+		}catch (Exception e) {
+			result.put("status", "False");
+			System.out.println("실패");
+		}
+		return result;
+	}
+	
 	
 	// 회원가입 - 이메일 인증
 	@RequestMapping(value = "/login/emailConfirm", method = RequestMethod.GET)
@@ -133,12 +148,25 @@ public class HomeController {
 	public int idCheck(@RequestParam("id") String id) throws Exception{
 		return service.userIdCheck(id);
 	}
-
+	@RequestMapping(value = "/login/idCheckGuest", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheckGuest(@RequestParam("guestId") String guestId) throws Exception{
+		return service.userIdCheck(guestId);
+	}
+	
 	// id code중복 체크 컨트롤러
 	@RequestMapping(value = "/login/idCodeCheck", method = RequestMethod.GET)
 	@ResponseBody
 	public int idCodeCheck(@RequestParam("id_code") String id_code) throws Exception{
 		return service.userIdCodeCheck(id_code);
+	}
+	
+	//idcode(geust)중복 체크
+	@RequestMapping(value = "/login/idCodeCheckGuest", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCodeCheckGuest(@RequestParam("id_codes") String id_codes) throws Exception{
+		logger.info(id_codes);
+		return service.userIdCodeCheck(id_codes);
 	}
 	
 	// emp code중복 체크 컨트롤러

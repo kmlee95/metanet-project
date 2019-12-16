@@ -32,7 +32,18 @@
 		#{emp_code},
 		#{id_use_yn})
 	</insert>
-
+	
+	<!-- 회원가입 게스트 -->
+	<insert id="signupguest" parameterType="kr.co.metanet.dto.MemberDTO">
+		insert into tb_account_guest
+		(id_code,
+		id, password,
+		id_use_yn)
+		values (#{id_code_guest}, #{guestId},
+		#{guestPassword},
+		#{guest_id_use_yn})
+	</insert>
+	
 	<!-- 회원가입 이메일 인증 -->
 	<update id="createAuthKey">
 		update tb_account_normal set certified_yn =
@@ -56,11 +67,17 @@
 		id_code
 		from tb_account_guest) where id_code = #{id_code}
 	</select>
+	
+
 
 	<!-- 아이디 체크(유효성검사) -->
 	<select id="idCheck" parameterType="String" resultType="int">
+		select count(*) from (select id
+		from tb_account_normal
+		union
 		select
-		count(*) from tb_account_normal where id = #{id}
+		id
+		from tb_account_guest) where id = #{id}
 	</select>
 
 	<!-- emp_code check(유효성검사) -->
@@ -153,5 +170,17 @@
 		group by hori_aam.id_code, hori_aam.emp_code
 		order by hori_aam.id_code
 	</select>
+	
+	<!--  권한목록에서 DETAIL버튼 클릭하여 권한 업데이트 -->
+	<update id="updateAuthority" parameterType="kr.co.metanet.dto.AuthorityDTO">
+		UPDATE tb_account_ag_mapping
+		SET id = #{id_code}, ag_code = #{ag_code}
+		, id_effective_start_date = #{id_effective_start_date},
+		id_effective_end_date = #{id_effective_end_date},
+		id_use_yn=#{id_use_yn}
+		WHERE emp_code = #{emp_code}
+	</update>
+	
+	
 </mapper>
 

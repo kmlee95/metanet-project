@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.co.metanet.dto.AuthorityDTO;
 import kr.co.metanet.dto.MemberDTO;
 import kr.co.metanet.service.AccountService;
 
@@ -45,5 +47,18 @@ public class AccoutControllerAjax {
 		}
 		return result;
 	}
-
+	
+	//권한 수정
+	@RequestMapping(value = "/updateAuthority", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public Map<String, Object> updateAuthorityMenu(AuthorityDTO dto) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			accountService.updateAuthority(dto);
+			result.put("status", "OK");
+		} catch (Exception e) {
+			result.put("status", "False");
+		}
+		return result;
+	}
 }

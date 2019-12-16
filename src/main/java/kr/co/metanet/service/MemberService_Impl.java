@@ -44,6 +44,10 @@ public class MemberService_Impl implements MemberService{
     	sendMail.send();
     }
     
+    @Override
+    public void signupguest(MemberDTO dto) throws Exception{
+    	dao.signupguest(dto);
+    }
     
     @Override
     public void userAuth(String id) throws Exception {
@@ -63,6 +67,8 @@ public class MemberService_Impl implements MemberService{
  	public int userIdCodeCheck(String id_code) throws Exception{
  		return dao.userIdCodeCheck(id_code);
  	}
+ 
+    
     @Override
  	public MemberDTO empCodeCheck(String emp_code) throws Exception{
  		return dao.empCodeCheck(emp_code);

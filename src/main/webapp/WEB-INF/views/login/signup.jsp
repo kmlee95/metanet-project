@@ -112,6 +112,92 @@
 					});
 				});
 				
+				//아이디 코드 검사(게스트)
+				$("#id_code_guest").blur(function() {
+					var id_codes = $('#id_code_guest').val();
+					$.ajax({
+						url : '${pageContext.request.contextPath}/login/idCodeCheckGuest?id_codes='+ id_codes,
+						type : 'get',
+						success : function(data) {
+							console.log(data);				
+										
+							if (data == 1) {
+									$("#id_code_check_guest").text("사용중인 아이디 코드입니다 :p");
+									$("#id_code_check_guest").css("color", "red");
+									$("#guest_reg_submit").attr("disabled", true);
+								} else {
+									if(codeJ.test(id_codes)){
+										$("#id_code_check_guest").text("");
+										$("#guest_reg_submit").attr("disabled", false);
+									} else if(id == ""){
+										$('#id_code_check_guest').text('아이디코드를 입력해주세요 :)');
+										$('#id_code_check_guest').css('color', 'red');
+										$("#guest_reg_submit").attr("disabled", true);				
+									} else {
+										$('#id_code_check_guest').text("아이디코드는 ID0000 형식이여야 합니다 :)");
+										$('#id_code_check_guest').css('color', 'red');
+										$("#guest_reg_submit").attr("disabled", true);
+									}
+								}
+							}
+						});
+					});
+					
+			//아이디 검사 Guest
+			$("#guestId").blur(function() {
+				var guestId = $('#guestId').val();
+				$.ajax({
+					url : '${pageContext.request.contextPath}/login/idCheckGuest?guestId='+ guestId,
+					type : 'get',
+					success : function(data) {
+						console.log(data);				
+									
+						if (data == 1) {
+								$("#id_check_guest").text("사용중인 아이디입니다 :p");
+								$("#id_check_guest").css("color", "red");
+								$("#guest_reg_submit").attr("disabled", true);
+							} else {
+								if(mailJ.test(guestId)){
+									$("#id_check_guest").text("");
+									$("#guest_reg_submit").attr("disabled", false);
+								} else if(id == ""){
+									$('#id_check_guest').text('아이디를 입력해주세요 :)');
+									$('#id_check_guest').css('color', 'red');
+									$("#guest_reg_submit").attr("disabled", true);				
+								} else {
+									$('#id_check_guest').text("아이디는 실제 이메일 형식만 가능합니다 :)");
+									$('#id_check_guest').css('color', 'red');
+									$("#guest_reg_submit").attr("disabled", true);
+								}
+							}
+						}, error : function() {
+								console.log("실패");
+						}
+					});
+				});		
+			//비밀번호 유효성 검사(Guest)
+			$('#guestPassword').blur(function() {
+				if (pwJ.test($('#guestPassword').val())) {
+					console.log('true');
+					$('#pw_check_guest').text('');
+				} else {
+					console.log('false');
+					$('#pw_check_guest').text('숫자 or 문자로만 4~12자리 입력 :)');
+					$('#pw_check_guest').css('color', 'red');
+				}
+			});
+			$('#guestCPassword').blur(function() {
+				if ($('#guestPassword').val() != $(this).val()) {
+					$('#pw2_check_guest').text('비밀번호가 일치하지 않습니다 :p');
+					$('#pw2_check_guest').css('color', 'red');
+					$("#guest_reg_submit").attr("disabled", true);
+				} else {
+					$('#pw2_check_guest').text('');
+					$("#guest_reg_submit").attr("disabled", false);
+				}
+			});			
+
+			
 			//아이디 검사
 			$("#id").blur(function() {
 				var id = $('#id').val();
@@ -186,9 +272,67 @@
 						}
 					});
 				});
-
+				
+				//게스트 회원가입 버튼 클릭 시 체크
+				$('#guest_reg_submit').click(function(){
+					// 비밀번호가 같은 경우 && 비밀번호 정규식
+					if (($('#guestPassword').val() == ($('#guestCPassword').val()))
+							&& pwJ.test($('#guestPassword').val())) {
+						signup_button[0] = true;
+					} else {
+						signup_button[0] = false;
+					}
+					// 이메일(아이디) 정규식
+					if (mailJ.test($('#guestId').val())){
+						signup_button[1] = true;
+					} else {
+						signup_button[1] = false;
+					}
 					
-			//아이디 체크
+					// 아이디 코드 정규식
+					if (codeJ.test($('#id_code_guest').val())){
+						signup_button[2] = true;
+					} else{
+						signup_button[2] = false;
+					}
+
+					var validAll = true;
+					for(var i = 0; i < signup_button.length; i++){
+						if(signup_button[i] == false){
+							validAll = false;
+						}
+					}
+					if(validAll){ // 유효성 모두 통과
+						var url = "/login/signupcheckguest";
+						var paramData = {
+								"id_code_guest" : $("#id_code_guest").val(),
+								"guestId" : $("#guestId").val(),
+								"guestPassword" : $("#guestPassword").val(),
+								"guest_id_use_yn" : $('input[name="guest_id_use_yn"]:checked').val(),
+						};
+						$.ajax({
+							url : url,
+							type : "POST",
+							dataType : "json",
+							data : paramData,
+							success : function(result) {
+								alert("게스트 계정생성완료!");
+							},
+							beforeSend:function(){
+							},
+							complete:function(){
+								alert("게스트 계정생성완료!");
+							}
+						})
+						$("#guest_reg_submit").attr("disabled", false);
+
+					} else{
+						alert('회원가입 정보를 다시 확인해 주세요')
+						$("#guest_reg_submit").attr("disabled", true);
+					}
+				});	
+					
+			//사원 회원가입 버튼 클릭 시 체크
 			$('#reg_submit').click(function(){
 				// 비밀번호가 같은 경우 && 비밀번호 정규식
 				if (($('#password').val() == ($('#cpassword').val()))
@@ -203,7 +347,6 @@
 				} else {
 					signup_button[1] = false;
 				}
-				
 				// 아이디 코드 정규식
 				if (codeJ.test($('#id_code').val())){
 					signup_button[2] = true;
@@ -214,7 +357,6 @@
 				var validAll = true;
 				for(var i = 0; i < signup_button.length; i++){
 					if(signup_button[i] == false){
-					
 						validAll = false;
 					}
 				}
@@ -255,15 +397,26 @@
 			
 			//계정 선택
 			$("#toggleP").change(function(){
-				$("span.normal").toggle();
+				$("span.normal").toggle(); //제목 토글
 				
-				$("#emailidToggle").toggle();
+				$("#emailidToggle").toggle(); //아이디 토글
 				$("#guestidToggle").toggle();
+
+				$("#IdCodeToggle").toggle(); //아이디 코드 토글
+				$("#guestIdCodeToggle").toggle();
 				
-				$("#guest_reg_submit").toggle();
+				$("#guest_reg_submit").toggle(); //가입버튼 토글
 				$("#reg_submit").toggle();
 
-				$("#guest_toggle").toggle();
+				$("#passToggle").toggle(); //패스워드 토글
+				$("#guestPassToggle").toggle();
+				$("#cpassToggle").toggle();
+				$("#guestCPassToggle").toggle();
+
+				$("#idUseToggle").toggle(); //아이디사용토글
+				$("#guestIdUseToggle").toggle();
+				
+				$("#guest_toggle").toggle(); //등록버튼 토글
 			});
 			
 		});
@@ -283,7 +436,7 @@
 							</h1>
 							<hr>
 							<form class="form-horizontal" name="signup" id="signup">
-								<div class="form-group">
+								<div class="form-group" id="IdCodeToggle">
 									<label class="control-label col-sm-3">ID Code <span
 										class="text-danger">*</span></label>
 									<div class="col-md-8 col-sm-9">
@@ -296,7 +449,22 @@
 										<div class="check_font" id="id_code_check"></div>
 									</div>
 								</div>
+								<!-- Guest IDcode -->
+								<div class="form-group" id="guestIdCodeToggle" style="display:none;">
+									<label class="control-label col-sm-3">ID Code(Guest) <span
+										class="text-danger">*</span></label>
+									<div class="col-md-8 col-sm-9">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-credit-card"></i></span> <input
+												type="text" class="form-control" name="id_code_guest" id="id_code_guest"
+												placeholder="Enter your ID_CODE(ID0000)" value="">	
+										</div>
+										<div class="check_font" id="id_code_check_guest"></div>
+									</div>
+								</div>
 								
+								<!-- 사원 ID -->
 								<div class="form-group" id="emailidToggle">
 									<label class="control-label col-sm-3">Email ID <span
 										class="text-danger">*</span></label>
@@ -310,7 +478,7 @@
 										<div class="check_font" id="id_check"></div>
 									</div>
 								</div>
-								
+								<!-- Guest ID -->
 								<div class="form-group" id="guestidToggle" style="display:none;"> 
 									<label class="control-label col-sm-3">Guest ID <span
 										class="text-danger">*</span></label>
@@ -321,11 +489,12 @@
 												type="text" class="form-control" name="guestId" id="guestId"
 												placeholder="Enter your Guest ID" value="">	
 										</div>
-										<div class="check_font" id="guestId_check"></div>
+										<div class="check_font" id="id_check_guest"></div>
 									</div>
 								</div>
-
-								<div class="form-group">
+								
+								<!-- USER PASSWORD -->
+								<div class="form-group" id="passToggle">
 									<label class="control-label col-sm-3">Set Password <span
 										class="text-danger">*</span></label>
 									<div class="col-md-5 col-sm-8">
@@ -338,7 +507,7 @@
 										<div class="check_font" id="pw_check"></div>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" id="cpassToggle">
 									<label class="control-label col-sm-3">Confirm Password
 										<span class="text-danger">*</span>
 									</label>
@@ -352,13 +521,55 @@
 										<div class="check_font" id="pw2_check"></div>
 									</div>
 								</div>
-								<div class="form-group">
+								
+								<!-- GUEST PASSWORD -->
+								<div class="form-group" id="guestPassToggle" style="display:none;">
+									<label class="control-label col-sm-3">Set Password <span
+										class="text-danger">*</span></label>
+									<div class="col-md-5 col-sm-8">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-lock"></i></span> <input type="password"
+												class="form-control" name="guestPassword" id="guestPassword"
+												placeholder="Choose password (5-15 chars) geust" value="">
+										</div>
+										<div class="check_font" id="guest_pw_check"></div>
+									</div>
+								</div>
+								<div class="form-group" id="guestCPassToggle" style="display:none;">
+									<label class="control-label col-sm-3">Confirm Password
+										<span class="text-danger">*</span>
+									</label>
+									<div class="col-md-5 col-sm-8">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-lock"></i></span> <input type="password"
+												class="form-control" name="guestCPassword" id="guestCPassword"
+												placeholder="Confirm your password guest" value="">
+										</div>
+										<div class="check_font" id="guest_pw2_check"></div>
+									</div>
+								</div>
+								
+								<div class="form-group" id="idUseToggle">
 									<label class="control-label col-sm-3" style="padding-top:3px;">아이디 사용여부 <span
 										class="text-danger">*</span></label>
 									<div class="col-md-8 col-sm-9">
 										<label> <input id="id_use_yn" name="id_use_yn" type="radio" value="Y"
 											checked> YES
 										</label>     <label> <input id="id_use_yn" name="id_use_yn" type="radio"
+											value="N"> NO
+										</label>
+									</div>
+								</div>
+								
+								<div class="form-group" id="guestIdUseToggle" style="display:none;">
+									<label class="control-label col-sm-3" style="padding-top:3px;">아이디 사용여부 <span
+										class="text-danger">*</span></label>
+									<div class="col-md-8 col-sm-9">
+										<label> <input id="guest_id_use_yn" name="guest_id_use_yn" type="radio" value="Y"
+											checked> YES
+										</label>     <label> <input id="guest_id_use_yn" name="guest_id_use_yn" type="radio"
 											value="N"> NO
 										</label>
 									</div>

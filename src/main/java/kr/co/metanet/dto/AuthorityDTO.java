@@ -17,6 +17,48 @@ public class AuthorityDTO {
 	private String aa_effective_end_date; //계정당 하나의 권한의 유효날짜(종료)
 	
 	private String ag_name; // 권한 그룹코드 이름
+	
+	
+	private String AG0001_end_date; //AG0001 ~ 4 만료날자
+	private String AG0002_end_date;
+	private String AG0003_end_date;
+	private String AG0004_end_date;
+
+	
+	
+	
+	
+	public String getAG0001_end_date() {
+		return AG0001_end_date;
+	}
+
+	public void setAG0001_end_date(String aG0001_end_date) {
+		AG0001_end_date = aG0001_end_date;
+	}
+
+	public String getAG0002_end_date() {
+		return AG0002_end_date;
+	}
+
+	public void setAG0002_end_date(String aG0002_end_date) {
+		AG0002_end_date = aG0002_end_date;
+	}
+
+	public String getAG0003_end_date() {
+		return AG0003_end_date;
+	}
+
+	public void setAG0003_end_date(String aG0003_end_date) {
+		AG0003_end_date = aG0003_end_date;
+	}
+
+	public String getAG0004_end_date() {
+		return AG0004_end_date;
+	}
+
+	public void setAG0004_end_date(String aG0004_end_date) {
+		AG0004_end_date = aG0004_end_date;
+	}
 
 	public String getId() {
 		return id;
@@ -121,5 +163,6 @@ public class AuthorityDTO {
 	public void setAG0004(String aG0004) {
 		AG0004 = aG0004;
 	}
+
 	
 }

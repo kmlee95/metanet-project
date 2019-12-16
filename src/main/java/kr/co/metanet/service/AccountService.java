@@ -21,4 +21,7 @@ public interface AccountService {
 	//권한 리스트
 	public List<AuthorityDTO> getAuthorityList() throws Exception;
 	
+	
+	//권한 업데이트
+	public void updateAuthority(AuthorityDTO dto) throws Exception;
 }

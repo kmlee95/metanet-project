@@ -3,6 +3,12 @@ package kr.co.metanet.dto;
 public class MemberDTO {
 	private String id;  //
 	private String id_code; //id_code
+	
+	private String id_code_guest; //게스트 아이디 코드
+	private String guestId; //게스트 아이디
+	private String guestPassword; //게스트 패스워드
+	private String guest_id_use_yn;//게스트 아이디 사용 확인 y, n
+	
     private String password; //비밀번호
     private String name; //이름
     private String join_date; //입사일자
@@ -15,13 +21,13 @@ public class MemberDTO {
 	private String certified_yn; //인증
 	private String org_code; // 부서 코드
 	
-	private String org_name;//議곗쭅 �씠由�
-	private String org_div; //議곗쭅 援щ텇
-	private String org_upper; //�긽�쐞 議곗쭅
+	private String org_name;//조직 이름
+	private String org_div; //議곗쭅 援щ
+	private String org_upper; //상위조직
 	
-	private int acq_days_num;//諛쒖깮�씪�닔
-	private int use_days_num;//�궗�슜�씪�닔
-	private int res_days_num;//�옍�뿬�씪�닔
+	private int acq_days_num;//휴가 발생일 수
+	private int use_days_num;//휴가 사용일 수
+	private int res_days_num;//휴가 잔여일 수
 	
 	
 	private String id_effective_start_date;//유효시작날자
@@ -34,6 +40,30 @@ public class MemberDTO {
 	
 	
 	
+	public String getId_code_guest() {
+		return id_code_guest;
+	}
+	public void setId_code_guest(String id_code_guest) {
+		this.id_code_guest = id_code_guest;
+	}
+	public String getGuestId() {
+		return guestId;
+	}
+	public void setGuestId(String guestId) {
+		this.guestId = guestId;
+	}
+	public String getGuestPassword() {
+		return guestPassword;
+	}
+	public void setGuestPassword(String guestPassword) {
+		this.guestPassword = guestPassword;
+	}
+	public String getGuest_id_use_yn() {
+		return guest_id_use_yn;
+	}
+	public void setGuest_id_use_yn(String guest_id_use_yn) {
+		this.guest_id_use_yn = guest_id_use_yn;
+	}
 	public String getId_effective_start_date() {
 		return id_effective_start_date;
 	}
