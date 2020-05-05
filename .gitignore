@@ -74,4 +74,5 @@ local.properties
 ### SVN ###
 .svn/
 
+.DS_Store
 # End of https://www.gitignore.io/api/svn,eclipse
