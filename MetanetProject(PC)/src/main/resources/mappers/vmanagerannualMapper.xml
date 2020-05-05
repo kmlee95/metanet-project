@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- DAO에서 어떻게 이 mapper를 부를 것인지 namespace 정해줌 -->
+
+<!-- id와 name의 데이터가나옴 -->
+<mapper namespace="Annual">
+   <select id="List2">
+      select    e.emp_code, e.name, o.org_name, e.emp_rank, v.acq_days_num, v.use_Days_num, v.res_days_num
+      from   tb_employee e, tb_organization o, tb_vacation_annual_management v
+      where    e.emp_code = v.emp_code and e.org_code = o.org_code
+      
+      <if
+         test="searchType=='emp_code' and keyword != null and keyword != '' ">
+         AND e.emp_code like '%' || #{keyword} || '%'
+      </if>
+      <if
+         test="searchType=='name' and keyword != null and keyword != '' ">
+         AND e.name like '%' || #{keyword} || '%'
+      </if>
+      order by e.emp_code
+   </select>   
+
+   <update id="updateDays"
+      parameterType="Map"> 
+      UPDATE    tb_vacation_annual_management
+      SET    acq_days_num = #{acq_days_num} 
+             , use_days_num = #{use_days_num}
+             , res_days_num = #{res_days_num}
+      WHERE    emp_code = #{emp_code}
+   </update>
+   
+
+<update id="updateAqDate" parameterType="String">
+UPDATE tb_vacation_annual_management
+SET acq_days_num = 15, 
+   res_days_num = 15,
+   use_days_num = 0
+WHERE emp_code = #{emp_code} 
+</update>
+
+</mapper>

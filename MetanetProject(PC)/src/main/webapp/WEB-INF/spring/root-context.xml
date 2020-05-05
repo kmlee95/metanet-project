@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource">
+		<property value="oracle.jdbc.driver.OracleDriver"
+			name="driverClassName" />
+		<property value="jdbc:oracle:thin:@10.245.18.28:1521:orcl"
+			name="url" />
+		<property value="mini" name="username" /><!-- DB User -->
+		<property value="1234" name="password" /><!-- DB User Password -->
+	</bean>
+
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="SqlSessionFactory">
+		<property name="dataSource" ref="dataSource" />
+		<property value="classpath:mybatis-config.xml"
+			name="configLocation" />
+		<property value="classpath:/mappers/*Mapper.xml"
+			name="mapperLocations" />
+	</bean>
+
+	<bean class="org.mybatis.spring.SqlSessionTemplate"
+		id="sqlSession" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory"
+			ref="SqlSessionFactory" />
+	</bean>
+	
+	<!-- mail api -->
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="kmlee9598@gmail.com" />
+		<property name="password" value="rudals95" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

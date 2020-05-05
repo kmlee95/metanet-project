@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 마이바티스 3 Mapper DOCTYPE -->
+
+<!-- <!DOCTYPE mapper "http://mybatis.org/dtd/mybatis-3-mapper.dtd" PUBLIC 
+   "-//mybatis.org//DTD Mapper 3.0//EN"> -->
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 매퍼 설정 -->
+<mapper namespace="Apply">
+   
+     <!-- 휴가 유형 SELECT -->
+   <select id="selectVacationCode" resultType="kr.co.metanet.dto.CodeDTO">
+      select code , code_group, code_name 
+      from TB_CODE
+        where code_group = 'VK'
+   </select>
+   
+   
+   <!-- 휴가 신청 INSERT -->
+   <update id="writeApply" parameterType="kr.co.metanet.dto.VacationApplyDTO">
+      INSERT INTO tb_vacation_apply (
+               va_code
+               , apply_emp_code
+               , confirm_emp_upper 
+               , va_reg_date 
+               , va_start_date, va_end_date
+               , va_days_num
+               , vk_code
+               , va_reason
+               , confirm_date
+               , vs_code 
+               , rej_reason)
+
+      VALUES ( 'VA'|| LPAD(VA_CODE_SEQ.nextval,4,0)
+                  , (select emp_code
+                     from TB_ACCOUNT_NORMAL
+                     where id = #{id} ) 
+                   
+                  , (select ep.emp_upper
+                       from  tb_employee ep
+                               INNER JOIN
+                            TB_ACCOUNT_NORMAL an
+                             ON an.emp_code = ep.emp_code
+                  where an.id = #{id} )
+                  , sysdate 
+                  , #{va_start_date}
+                  , #{va_end_date}
+                  , #{va_days_num}
+                  , #{vk_code}
+                  , #{va_reason}
+                  , sysdate
+                  , ( select CODE from tb_Code
+                        where code = 'VS1')
+                  , '' )
+   </update>
+   
+   
+     <!-- 휴가 신청 페이지 내 정보  -->
+   <select id="selectVacationMyInfo" resultType="kr.co.metanet.dto.EmployeeDTO">
+   select  emp.emp_code, emp.name, emp.emp_rank
+         , org.org_name 
+         , emp.join_date 
+         , upemp.name as upper_name
+         , od.code_name as org_code_name
+         , vam.res_days_num
+   from tb_employee emp 
+        left outer join tb_employee upemp
+           on emp.emp_upper = upemp.emp_code
+         inner join TB_ORGANIZATION org
+           on emp.org_code = org.org_code
+         inner join tb_account_normal ano
+            on emp.emp_code = ano.emp_code
+         inner join (select * from tb_code where code_group ='OD') od
+          on od.code = org.org_div
+           inner join tb_vacation_annual_management vam
+               on emp.emp_code = vam.emp_code
+    where ano.id = #{id}
+   </select>
+   
+   <!-- 휴가 신청 SELECT -->
+   <select id="selectVacationList" resultType="kr.co.metanet.dto.VacationApplyDTO">
+   select  
+       va.va_code as va_code
+       , va.vs_code as vs_code
+        , ano.id as id
+        , upemp.name as upper_emp_name
+        , vs.code_name as vs_code_name
+        , vk.code as vk_code
+        , vk.code_name as vk_code_name
+        , vam.res_days_num as res_days_num
+        , va.va_reason
+        , va.va_days_num as va_days_num
+        , to_char(va.va_start_date, 'yyyy-mm-dd') as va_start_date
+        , to_char(va.va_end_date, 'yyyy-mm-dd') as va_end_date
+        , to_char(va.va_reg_date, 'yyyy-mm-dd') as va_reg_date
+   from tb_employee emp 
+           left outer join tb_employee upemp
+              on emp.emp_upper = upemp.emp_code
+          inner join tb_account_normal ano
+              on emp.emp_code = ano.emp_code
+           inner join tb_vacation_apply va 
+              on emp.emp_code = va.apply_emp_code
+           inner join ( select * from tb_code 
+                         where code_group = 'VS') vs
+                on vs.code = va.vs_code
+              inner join ( select * from tb_code 
+                          where code_group ='VK') vk 
+             on vk.code = va.vk_code
+           inner join tb_vacation_annual_management vam
+               on emp.emp_code = vam.emp_code
+    where id = #{id}
+        
+   </select>
+   
+<!--    휴가 신청 내역삭제 -->
+   <delete id="deletApply" parameterType="String">
+      DELETE FROM tb_vacation_apply
+      WHERE va_code = #{va_code}
+   </delete>
+   
+<!--    휴가 신청 수정 -->
+   <update id="updateApply" parameterType="kr.co.metanet.dto.VacationApplyDTO">
+      update tb_vacation_apply
+      set va_start_date = #{va_start_date}
+         ,va_end_date = #{va_end_date}
+         ,va_days_num =  #{va_days_num}
+         ,va_reason = #{va_reason}
+         ,vk_code = #{vk_code}
+      where va_code = #{va_code}
+   </update>
+   
+   
+<!--    휴가 신청 정보 가져오기 -->
+    <select id="selectApply" 
+            parameterType="String"
+            resultType="kr.co.metanet.dto.VacationApplyDTO">
+     select  * 
+     from tb_vacation_apply
+     where va_code = #{va_code}
+    </select>
+   
+</mapper>

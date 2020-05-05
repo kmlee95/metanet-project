@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ApplicantList">
+
+	<select id="testlittle" resultType="kr.co.metanet.dto.ApplicantListDTO" parameterType="String">
+    select tva.vs_code,tva.va_code,apply_emp_code,vk_code,va_days_num, tam.use_days_num, tam.res_days_num
+    from tb_vacation_apply tva, tb_vacation_annual_management tam
+    where tva.va_code = #{va_code}
+    and tva.apply_emp_code =tam.emp_code
+	</select>
+	
+	<update id="updateRej" parameterType="hashMap">
+		update tb_vacation_apply
+		set rej_reason = #{rej_reason}
+		,vs_code = 'VS3'
+		,confirm_date=sysdate
+		where va_code = #{va_code} 
+	</update>
+
+	<update id="updateDays" parameterType="hashMap">
+		update tb_vacation_annual_management 
+		set use_days_num = #{Use_days_num}
+			,res_days_num= #{Res_days_num} 
+		where emp_code = #{emp_code}
+		
+	</update>
+
+	<update id="approve" parameterType="String">
+		update tb_vacation_apply set vs_code = 'VS2', confirm_date=sysdate where va_code = #{va_code}
+	
+	</update>
+				
+	<select id="kidsanuualbreak" resultType="kr.co.metanet.dto.ApplicantListDTO" parameterType="String">
+    select 
+        e1.name name, too.org_name,e1.emp_rank, e1.join_date
+        ,tm.acq_days_num, tm.use_days_num, tm.res_days_num
+        , e2.name boss_name
+        
+    from tb_employee e1, tb_employee e2,tb_vacation_annual_management tm, tb_organization too
+    
+    where e1.emp_upper = e2.emp_code
+    AND e2.org_code = too.org_code
+    AND (e1.emp_code ,tm.emp_code)
+            IN 
+            (
+                select e1.emp_code me,e1.emp_code me2
+                from tb_employee e1, tb_employee e2
+                where e1.emp_upper = e2.emp_code
+                AND e2.emp_code = #{empCodeOfLoginedMember}
+            )
+	</select>
+
+	<select id="testlist" resultType="kr.co.metanet.dto.ApplicantListDTO" parameterType="String">
+		select tva.va_days_num,tam.res_days_num,tva.va_code,tva.va_reg_date, te.name, tor.org_name, 
+				te.emp_rank, te.join_date, tc1.code_name vk_code_name, 
+				tva.va_start_date, tva.va_end_date, tc2.code_name vs_code_name, tva.rej_reason, tva.va_reason
+		
+		from tb_vacation_apply tva, tb_employee te, tb_organization tor, tb_code tc1, tb_code tc2, tb_vacation_annual_management tam
+		where confirm_emp_upper = #{empCodeOfLoginedMember}
+			and tva.apply_emp_code = te.emp_code
+			and te.org_code = tor.org_code
+			and tva.vk_code = tc1.code
+			and tva.vs_code = tc2.code
+            and tam.emp_code = tva.apply_emp_code
+	</select>
+	
+	<select id="test" resultType="kr.co.metanet.dto.ApplicantListDTO" parameterType="String">
+		select
+		    a.name, tb_organization.org_name, a.emp_rank, a.join_date, a.acq_days_num, a.use_days_num, a.res_days_num, a.boss_name
+		from
+		(
+		    select 
+		        e1.emp_code me,e1.name name, e1.emp_rank, e1.join_date
+		        ,tm.acq_days_num, tm.use_days_num, tm.res_days_num
+		        ,e2.emp_code boss, e2.name boss_name, e1.org_code
+		        
+		    from tb_employee e1, tb_employee e2,tb_vacation_annual_management tm
+		    
+		    where e1.emp_upper = e2.emp_code(+)
+		    
+		    AND e1.emp_code = #{empCodeOfLoginedMember}    
+		    AND tm.emp_code = #{empCodeOfLoginedMember}
+		) a, tb_organization
+		where a.org_code = tb_organization.org_code
+	</select>
+</mapper>

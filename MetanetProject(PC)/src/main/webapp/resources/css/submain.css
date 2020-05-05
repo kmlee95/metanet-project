@@ -1,0 +1,140 @@
+
+
+
+body{
+  grid-gap: 0px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+}
+#abc{
+  font-weight: bold;
+  font-size: 300px;
+}
+.turnblue{
+    animation-name: bg;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+}
+.item1 {
+  grid-area: header;
+  background-color: #14db49;
+}
+.item2{
+  position: relative;
+
+  grid-area: main;
+  background: linear-gradient(to left, white 50%, black 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 1.5s ease-out;
+  transition-delay: 0s;
+
+
+}
+.subgrid{
+  position: relative;
+  top:10%;
+  height: 0px;
+
+}
+
+
+.item2 .subgrid .logo_row{
+  position: relative;
+  height: 0px;
+  left: 68%;
+}
+.item2 .subgrid .two {
+  height: 150px;
+
+  text-align: center;
+  font-size: 9vw;
+  font-weight: bold;
+  color: #0C4DA1;
+  padding: 0;
+  vertical-align: middle;
+
+  animation-name: text;
+  animation-duration: 3s;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+}
+
+
+.item3 {
+  grid-area: footer;
+  background-color: #f76911;
+}
+.grid-container {
+  position: fixed;
+  display: grid;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+  padding: 0px;
+    width: 100vw;
+  height: 100vh;
+}
+
+img{
+  opacity: 0;
+  animation-name: logo;
+  animation-duration: 3s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+
+}
+
+@-webkit-keyframes 'bg'{
+  0% {
+    background-color: #000000;
+  }
+  100% {
+    background-color: #0C4DA1;
+  }
+}
+@-webkit-keyframes 'logo'{
+  0% {
+    opacity: 0;
+    width: 6vw;
+    height: 6vw;
+  }
+  100% {
+    opacity: 1;
+    width: 4.5vw;
+    height: 4.5vw;
+    transform: rotate(270deg);
+  }
+}
+
+@-webkit-keyframes 'text'{
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+
+span{
+  background: linear-gradient(to right, #29bbff,#d5d909,#ff4400);
+  animation: rainbow 2s ease-in-out infinite;
+  background-clip: text;
+  -webkit-background-clip:text;
+  color:#0C4DA1;
+  transition: color .2s ease-in-out;
+}
+span:hover{
+  color:rgba(0,0,0,0);
+}
+@keyframes rainbow {
+  0%{background-position:left}
+  100%{background-position:left}
+}
